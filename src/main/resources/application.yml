@@ -1,11 +1,11 @@
 server:
-  port: 8090
+  port: 9090
 mybatis:
   mapper-locations: classpath:mapper/*.xml
 
 spring:
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/miaosha?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8
+    url: jdbc:mysql://95.169.25.65:3306/miaosha?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8
     username: root
     password: HUANGJING
     driver-class-name: com.mysql.jdbc.Driver
