@@ -11,6 +11,7 @@ import com.davin.miaoshaproject.service.model.UserModel;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import java.util.Base64;
 import sun.misc.BASE64Encoder;
 
 import javax.servlet.http.HttpServletRequest;
@@ -66,6 +67,7 @@ public class UserController extends BaseController{
 
     public String enCodeByMD5(String str) throws NoSuchAlgorithmException, UnsupportedEncodingException {
         MessageDigest md5 = MessageDigest.getInstance("MD5");
+
         BASE64Encoder base64Encoder = new BASE64Encoder();
 
         String newStr = base64Encoder.encode(md5.digest(str.getBytes("utf-8")));

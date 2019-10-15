@@ -8,7 +8,7 @@
 
     <context id="Mysql" defaultModelType="flat" targetRuntime="MyBatis3">
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://127.0.0.1:3306/miaosha"
+                        connectionURL="jdbc:mysql://95.169.25.65:3306/miaosha"
                         userId="root"
                         password="HUANGJING">
         </jdbcConnection>

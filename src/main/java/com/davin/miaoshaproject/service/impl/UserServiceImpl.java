@@ -27,7 +27,7 @@ public class UserServiceImpl implements UserService {
         if(userInfo == null){
             return null;
         }
-        UserPassword userPassword = userPasswordMapper.selectByUserId(userInfo.getId());
+        UserPassword userPassword = userPasswordMapper.selectByPrimaryKey(userInfo.getId());
         UserModel userModel = convertFromDataObject(userInfo,userPassword);
         return userModel;
 
