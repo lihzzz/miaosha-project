@@ -4,6 +4,8 @@ public enum  BusinessError implements CommonError{
 
     PARAMETER_VALIDATION_ERROR(10003,"canshubuhefa"),
     UNKONE_ERROR(10004,"未知错误"),
+    USER_LOGIN_FAIL(10005,"登录失败"),
+    USER_NOT_LOGIN(10006,"用户未登陆"),
     USER_NOT_EXIST(10001,"yonghubucunzai")
         ;
 

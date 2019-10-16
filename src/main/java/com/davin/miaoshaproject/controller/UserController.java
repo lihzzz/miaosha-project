@@ -2,7 +2,6 @@ package com.davin.miaoshaproject.controller;
 
 import com.alibaba.druid.util.StringUtils;
 import com.davin.miaoshaproject.controller.viewobject.UserVo;
-import com.davin.miaoshaproject.dao.UserInfoMapper;
 import com.davin.miaoshaproject.error.BusinessError;
 import com.davin.miaoshaproject.error.BusinessException;
 import com.davin.miaoshaproject.response.CommonReturnType;
@@ -11,14 +10,12 @@ import com.davin.miaoshaproject.service.model.UserModel;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import java.util.Base64;
 import sun.misc.BASE64Encoder;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Map;
 import java.util.Random;
 
 @RestController
@@ -33,6 +30,31 @@ public class UserController extends BaseController{
 
     @Autowired
     private HttpServletRequest httpServletRequest;
+
+
+    @RequestMapping(value = "/login",method = RequestMethod.POST)
+    @ResponseBody
+    public CommonReturnType login(@RequestParam(name = "telphone") String telphone,
+                                  @RequestParam(name = "password") String password) throws BusinessException, UnsupportedEncodingException, NoSuchAlgorithmException {
+        if(org.apache.commons.lang3.StringUtils.isEmpty(telphone) || org.apache.commons.lang3.StringUtils.isEmpty(password)){
+            throw new BusinessException(BusinessError.PARAMETER_VALIDATION_ERROR);
+        }
+
+        UserModel userModel = userService.validateLogin(telphone,this.enCodeByMD5(password));
+
+
+        UserVo userVo = convertFromMode(userModel);
+        return CommonReturnType.create(userVo);
+    }
+
+    private UserVo convertFromMode(UserModel userModel){
+        if(userModel == null){
+            return null;
+        }
+        UserVo userVo = new UserVo();
+        BeanUtils.copyProperties(userVo,userModel);
+        return userVo;
+    }
 
 
     @RequestMapping(value = "/register",method = RequestMethod.POST)
@@ -79,8 +101,8 @@ public class UserController extends BaseController{
     public CommonReturnType getUser(@RequestParam(name = "id")Integer id ) throws BusinessException {
         UserModel userModel = userService.getUserById(id);
         if(userModel == null){
-            userModel.setEncrptPassword("asas");
-            //throw new BusinessException(BusinessError.USER_NOT_EXIST);
+            //userModel.setEncrptPassword("asas");
+            throw new BusinessException(BusinessError.USER_NOT_EXIST);
         }
         UserVo userVo = new UserVo();
         BeanUtils.copyProperties(userModel,userVo);

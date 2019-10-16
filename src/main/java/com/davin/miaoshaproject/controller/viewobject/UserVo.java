@@ -10,5 +10,4 @@ public class UserVo {
     private int age;
     private String telphone;
     private String registerMode;
-    private String thirdPartyId;
 }

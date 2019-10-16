@@ -88,4 +88,23 @@ public class UserServiceImpl implements UserService {
         return;
 
     }
+
+
+    @Override
+    public UserModel validateLogin(String telphone, String encrptPassword) throws BusinessException{
+        UserInfo userInfo = userInfoMapper.selectBytelphone(telphone);
+
+        if(userInfo == null){
+            throw new BusinessException(BusinessError.USER_LOGIN_FAIL);
+        }
+
+        UserPassword userPassword = userPasswordMapper.selectByPrimaryKey(userInfo.getId());
+        UserModel userModel = convertFromDataObject(userInfo,userPassword);
+        if(!StringUtils.equals(encrptPassword,userModel.getEncrptPassword())){
+            throw new BusinessException(BusinessError.USER_LOGIN_FAIL);
+        }
+
+        return userModel;
+
+    }
 }

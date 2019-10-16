@@ -30,8 +30,24 @@
             <property name="enableSubPackages" value="true" />
         </javaClientGenerator>
 
-        <table tableName="%" >
+        <table tableName="item" >
             <generatedKey column="id" sqlStatement="Mysql"/>
+        </table>
+
+        <table tableName="item_stock" >
+            <generatedKey column="id" sqlStatement="Mysql"/>
+        </table>
+
+        <table tableName="order_info" >
+            <generatedKey column="id" sqlStatement="Mysql"/>
+        </table>
+
+        <table tableName="promo" >
+            <generatedKey column="id" sqlStatement="Mysql"/>
+        </table>
+
+        <table tableName="sequence_info" >
+            <generatedKey column="name" sqlStatement="Mysql"/>
         </table>
 
     </context>
