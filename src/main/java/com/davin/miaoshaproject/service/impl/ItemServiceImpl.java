@@ -85,11 +85,8 @@ public class ItemServiceImpl implements ItemService {
         if(item == null){
             return null;
         }
-        ItemModel itemModel = new ItemModel();
-        BeanUtils.copyProperties(itemModel,item);
-
         ItemStock itemStock = itemStockMapper.selectByItemId(item.getId());
-        itemModel.setStock(itemStock.getStock());
+        ItemModel itemModel = this.converModelFromDataObject(item,itemStock);
         return itemModel;
 
     }
