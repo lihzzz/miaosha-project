@@ -193,7 +193,7 @@
   </select>
   <select id="selectByItemId" resultType="com.davin.miaoshaproject.model.ItemStock">
     select
-    <include refid="Base_Column_List" />
+    id,stock,item_id as itemId
     from item_stock
     where item_id = #{id,jdbcType=INTEGER}
   </select>
@@ -261,5 +261,10 @@
     set stock = #{stock,jdbcType=INTEGER},
       item_id = #{itemId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByItemId" parameterType="com.davin.miaoshaproject.model.ItemStock">
+    update item_stock
+    set stock = #{stock,jdbcType=INTEGER}
+    where item_id = #{itemId,jdbcType=INTEGER}
   </update>
 </mapper>

@@ -1,15 +1,22 @@
 package com.davin.miaoshaproject.service.impl;
 
 import com.davin.miaoshaproject.dao.ItemMapper;
+import com.davin.miaoshaproject.dao.ItemStockMapper;
 import com.davin.miaoshaproject.dao.OrderInfoMapper;
 import com.davin.miaoshaproject.dao.SequenceInfoMapper;
+import com.davin.miaoshaproject.error.BusinessError;
 import com.davin.miaoshaproject.error.BusinessException;
 import com.davin.miaoshaproject.model.Item;
+import com.davin.miaoshaproject.model.ItemStock;
 import com.davin.miaoshaproject.model.OrderInfo;
 import com.davin.miaoshaproject.model.SequenceInfo;
+import com.davin.miaoshaproject.service.ItemService;
 import com.davin.miaoshaproject.service.OrderService;
+import com.davin.miaoshaproject.service.UserService;
 import com.davin.miaoshaproject.service.model.ItemModel;
 import com.davin.miaoshaproject.service.model.OrderModel;
+import com.davin.miaoshaproject.service.model.UserModel;
+import com.sun.tools.corba.se.idl.constExpr.Or;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,29 +32,74 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private ItemMapper itemMapper;
     @Autowired
+    private ItemStockMapper itemStockMapper;
+    @Autowired
     private OrderInfoMapper orderInfoMapper;
     @Autowired
     private SequenceInfoMapper sequenceInfoMapper;
+
+    @Autowired
+    private ItemService itemService;
+    @Autowired
+    private UserService userService;
+
     @Override
+    @Transactional
     public OrderModel createOrder(Integer userId, Integer itemId, Integer promoId, Integer amount) throws BusinessException {
-        if(userId == null || itemId == null || amount == null){
-            return null;
+//        if(userId == null || itemId == null || amount == null){
+//            return null;
+//        }
+//        ItemStock itemStock = itemStockMapper.selectByItemId(itemId);
+//        if(itemStock.getStock() <= 0){
+//            return null;
+//        }
+//        itemStock.setStock(itemStock.getStock()-1);
+//        itemStockMapper.updateByItemId(itemStock);
+//
+//        OrderModel orderModel = new OrderModel();
+//        Item item = itemMapper.selectByPrimaryKey(itemId);
+//        orderModel.setUserId(userId);
+//        orderModel.setItemId(itemId);
+//        orderModel.setAmount(amount);
+//        orderModel.setItemPrice(item.getPrice());
+//        orderModel.setOrderPrice(item.getPrice().multiply(BigDecimal.valueOf(amount)));
+//
+//        orderModel.setId(this.generatorOrderNo());
+//
+//        promoId = promoId == null?0:promoId;
+//        orderModel.setPromoId(promoId);
+//        OrderInfo orderInfo = this.convertFromOrderModel(orderModel);
+//        orderInfoMapper.insert(orderInfo);
+//
+//
+//        return orderModel;
+
+
+        ItemModel itemModel = itemService.getItemById(itemId);
+
+        if(itemModel == null){
+            throw new BusinessException(BusinessError.PARAMETER_VALIDATION_ERROR,"shang ping bu cunzai");
         }
-        OrderModel orderModel = new OrderModel();
-        Item item = itemMapper.selectByPrimaryKey(itemId);
-        orderModel.setUser_id(userId);
-        orderModel.setItem_id(itemId);
-        orderModel.setPromp_id(promoId);
-        orderModel.setAmount(amount);
-        orderModel.setItem_price(item.getPrice());
-        orderModel.setOrder_price(item.getPrice().multiply(BigDecimal.valueOf(amount)));
+        UserModel userModel = userService.getUserById(userId);
+        if(userId == null){
+            throw new BusinessException(BusinessError.PARAMETER_VALIDATION_ERROR,"yong bu bu cun zai");
+        }
 
-        orderModel.setId(this.generatorOrderNo());
+        if(amount <= 0 || amount > 99){
+            throw new BusinessException(BusinessError.PARAMETER_VALIDATION_ERROR,"shuliangbuzhengque");
+        }
 
-        promoId = promoId == null?0:promoId;
-        orderModel.setPromp_id(promoId);
-        return orderModel;
+        if(promoId != null){
+            if(promoId.intValue() != itemModel.getPromoModel().getId()){
+
+            }
+        }
+
+        return new OrderModel();
+
     }
+
+
 
     @Transactional
     @Override

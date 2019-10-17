@@ -2,11 +2,14 @@ package com.davin.miaoshaproject.service.impl;
 
 import com.davin.miaoshaproject.dao.ItemMapper;
 import com.davin.miaoshaproject.dao.ItemStockMapper;
+import com.davin.miaoshaproject.dao.PromoMapper;
 import com.davin.miaoshaproject.error.BusinessException;
 import com.davin.miaoshaproject.model.Item;
 import com.davin.miaoshaproject.model.ItemStock;
+import com.davin.miaoshaproject.model.Promo;
 import com.davin.miaoshaproject.service.ItemService;
 import com.davin.miaoshaproject.service.model.ItemModel;
+import com.davin.miaoshaproject.service.model.PromoModel;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +26,10 @@ public class ItemServiceImpl implements ItemService {
 
     @Autowired
     private ItemStockMapper itemStockMapper;
+
+    @Autowired
+    private PromoMapper promoMapper;
+
     @Override
     public ItemModel createItem(ItemModel itemModel) throws BusinessException {
         if(itemModel == null){
@@ -34,6 +41,8 @@ public class ItemServiceImpl implements ItemService {
         ItemStock itemStock = convertItemStockFromItemModel(itemModel);
         itemStock.setItemId(item.getId());
         itemStockMapper.insertSelective(itemStock);
+
+
         return this.getItemById(item.getId());
     }
 
@@ -55,7 +64,7 @@ public class ItemServiceImpl implements ItemService {
         return itemStock;
     }
 
-    private ItemModel converModelFromDataObject(Item item,ItemStock itemStock){
+    private ItemModel converModelFromDataObject(Item item, ItemStock itemStock){
         if(item == null || itemStock == null){
             return null;
         }
@@ -81,12 +90,17 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public ItemModel getItemById(Integer id) {
         Item item = itemMapper.selectById(id);
-
         if(item == null){
             return null;
         }
         ItemStock itemStock = itemStockMapper.selectByItemId(item.getId());
         ItemModel itemModel = this.converModelFromDataObject(item,itemStock);
+
+        Promo promo = promoMapper.selectByItemId(itemModel.getId());
+        PromoModel promoModel = new PromoModel();
+        BeanUtils.copyProperties(promo,promoModel);
+        itemModel.setPromoModel(promoModel);
+
         return itemModel;
 
     }

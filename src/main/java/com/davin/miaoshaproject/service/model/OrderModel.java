@@ -9,15 +9,15 @@ public class OrderModel {
 
     private String id;
 
-    private Integer user_id;
+    private Integer userId;
 
-    private Integer item_id;
+    private Integer itemId;
 
-    private BigDecimal item_price;
+    private BigDecimal itemPrice;
 
     private Integer amount;
 
-    private BigDecimal order_price;
+    private BigDecimal orderPrice;
 
-    private Integer promp_id;
+    private Integer promoId;
 }

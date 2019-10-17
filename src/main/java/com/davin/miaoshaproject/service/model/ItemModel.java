@@ -11,7 +11,6 @@ import java.math.BigDecimal;
 public class ItemModel {
     private Integer id;
 
-
     @NotNull(message = "shang ping bu neng wei kong")
     private String title;
 

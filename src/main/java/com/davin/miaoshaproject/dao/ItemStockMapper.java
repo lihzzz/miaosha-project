@@ -94,4 +94,7 @@ public interface ItemStockMapper {
      * @mbg.generated Wed Oct 16 14:49:47 CST 2019
      */
     int updateByPrimaryKey(ItemStock record);
+
+
+    int updateByItemId(ItemStock record);
 }

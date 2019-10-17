@@ -42,9 +42,17 @@ public class UserController extends BaseController{
 
         UserModel userModel = userService.validateLogin(telphone,this.enCodeByMD5(password));
 
+        if(userModel != null){
+            UserVo userVo = convertFromMode(userModel);
+            httpServletRequest.getSession().setAttribute("IS_LOGIN",true);
+            httpServletRequest.getSession().setAttribute("LOGIN_USER",userModel);
+            return CommonReturnType.create(userVo);
+        }else{
+            return CommonReturnType.create(null);
+        }
 
-        UserVo userVo = convertFromMode(userModel);
-        return CommonReturnType.create(userVo);
+
+
     }
 
     private UserVo convertFromMode(UserModel userModel){
@@ -52,7 +60,7 @@ public class UserController extends BaseController{
             return null;
         }
         UserVo userVo = new UserVo();
-        BeanUtils.copyProperties(userVo,userModel);
+        BeanUtils.copyProperties(userModel,userVo);
         return userVo;
     }
 
